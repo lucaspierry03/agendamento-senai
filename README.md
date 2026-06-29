@@ -157,10 +157,15 @@ Request → FormRequest (valida) → Controller → Service → Repository → M
 ## Testes
 
 ```bash
-docker-compose exec backend php artisan test
+docker run --rm --network agendamento-senai_default \
+  -v "$(pwd)/backend:/app" -w /app \
+  -e APP_KEY=base64:B4EsiIuVkaFFd2XhjniEET+OX1LVim3DyI33r7yBoAA= \
+  -e DB_CONNECTION=mysql -e DB_HOST=mysql -e DB_PORT=3306 \
+  -e DB_DATABASE=agendamento -e DB_USERNAME=agendamento -e DB_PASSWORD=secret \
+  php:8.5-cli bash -c "apt-get update -qq > /dev/null && apt-get install -y -qq unzip libzip-dev > /dev/null && docker-php-ext-install zip pdo_mysql > /dev/null && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer > /dev/null && composer install -q && php vendor/bin/phpunit"
 ```
 
-35 testes cobrindo:
+39 testes cobrindo:
 - Autenticação (login válido/inválido, acesso protegido)
 - CRUD de usuários (permissões admin vs atendente)
 - CRUD de clientes (validação, soft delete)
@@ -199,12 +204,13 @@ agendamento-senai/
 │   ├── app/Models/                 (5 models)
 │   ├── database/migrations/        (5 migrations)
 │   ├── database/seeders/           (4 seeders)
-│   ├── tests/Feature/             (6 test files, 35 testes)
+│   ├── tests/Feature/             (6 test files, 39 testes)
 │   └── routes/api.php
 └── frontend/
     ├── src/views/                  (6 páginas)
-    ├── src/components/             (6 componentes)
+    ├── src/components/             (11 componentes reutilizáveis)
     ├── src/composables/            (useAuth)
     ├── src/services/               (api.js)
+    ├── src/utils/                  (masks.js)
     └── src/router/                 (guards por role)
 ```
