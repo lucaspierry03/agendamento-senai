@@ -1,0 +1,52 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      APP_NAME: "Agendamento SENAI"
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      APP_KEY: base64:B4EsiIuVkaFFd2XhjniEET+OX1LVim3DyI33r7yBoAA=
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: agendamento
+      DB_USERNAME: agendamento
+      DB_PASSWORD: secret
+      SESSION_DRIVER: cookie
+      SANCTUM_STATEFUL_DOMAINS: "localhost:5173,localhost"
+      FRONTEND_URL: http://localhost:5173
+      APP_TIMEZONE: America/Sao_Paulo
+      APP_LOCALE: pt_BR
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+  mysql:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: agendamento
+      MYSQL_USER: agendamento
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  mysql_data:
