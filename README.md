@@ -28,7 +28,7 @@ Sistema web para gerenciamento de agendamentos de atendimentos e disponibilidade
 ### Setup (um comando)
 
 ```bash
-docker-compose up --build
+docker-compose up -d --build
 ```
 
 Aguarde o backend conectar ao MySQL (logs mostram "Starting server...").

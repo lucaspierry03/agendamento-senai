@@ -8,6 +8,13 @@ use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
+// Health
+Route::get('/', fn () => response()->json([
+    'name' => 'Agendamento API',
+    'version' => '1.0.0',
+    'status' => 'running',
+]));
+
 // Auth
 Route::post('/login', [AuthController::class, 'login']);
 
