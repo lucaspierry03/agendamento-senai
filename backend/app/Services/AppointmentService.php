@@ -14,7 +14,6 @@ class AppointmentService
 
     public function create(array $data): Appointment
     {
-        // Valida conflito de horário
         $hasConflict = $this->repository->hasConflict(
             $data['user_id'],
             $data['date'],

@@ -11,7 +11,6 @@ class UpdateUserRequest extends FormRequest
         $user = $this->user();
         $targetId = (int) $this->route('id');
 
-        // Admin edita qualquer um, atendente edita apenas ele mesmo
         return $user->isAdmin() || $user->id === $targetId;
     }
 
@@ -21,7 +20,6 @@ class UpdateUserRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
         ];
 
-        // Apenas admin pode alterar o tipo de usuário
         if ($this->user()->isAdmin()) {
             $rules['role'] = ['required', 'in:admin,attendant'];
         }

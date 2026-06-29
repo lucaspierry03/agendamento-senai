@@ -37,10 +37,8 @@ async function fetchAttendants() {
 async function openSchedule(attendant) {
   scheduling.value = attendant
 
-  // Buscar disponibilidades existentes deste atendente
   const { data } = await api.get('/availabilities', { params: { user_id: attendant.id } })
 
-  // Montar formulário com os 7 dias
   scheduleForm.value = days.map(d => {
     const existing = data.find(a => a.day_of_week === d.value)
     return {
@@ -58,13 +56,11 @@ async function openSchedule(attendant) {
 async function submitSchedule() {
   submitting.value = true
   try {
-    // Deleta os que foram desmarcados (se existiam)
     const toDelete = scheduleForm.value.filter(s => !s.enabled && s.id)
     for (const s of toDelete) {
       await api.delete(`/availabilities/${s.id}`)
     }
 
-    // Cria ou atualiza os habilitados
     const toSave = scheduleForm.value.filter(s => s.enabled)
     for (const s of toSave) {
       const payload = {
@@ -91,10 +87,6 @@ async function submitSchedule() {
   }
 }
 
-function getScheduleSummary(attendant) {
-  // Pega as disponibilidades desse atendente (precisamos carregar)
-  return ''
-}
 </script>
 
 <template>

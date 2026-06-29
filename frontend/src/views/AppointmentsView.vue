@@ -87,7 +87,6 @@ const tableColumns = [
   { key: 'actions', label: 'Ações', align: 'right' },
 ]
 
-// Navigation
 function navigatePrev() { calendarRef.value?.getApi()?.prev() }
 function navigateNext() { calendarRef.value?.getApi()?.next() }
 function navigateToday() { calendarRef.value?.getApi()?.today() }

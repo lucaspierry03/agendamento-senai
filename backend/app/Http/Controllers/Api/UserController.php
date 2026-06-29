@@ -39,7 +39,6 @@ class UserController extends Controller
 
         $data = $request->validated();
 
-        // Atendente não pode alterar role
         if ($request->user()->isAttendant()) {
             unset($data['role']);
         }

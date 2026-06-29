@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 import api from '../services/api'
 
 const user = ref(null)
@@ -9,7 +10,6 @@ export function useAuth() {
   const router = useRouter()
 
   async function login(email, password, remember = false) {
-    // Get CSRF cookie first (Sanctum SPA)
     await axios.get('/sanctum/csrf-cookie', { baseURL: '', withCredentials: true })
     const { data } = await api.post('/login', { email, password, remember })
     user.value = data.user
@@ -43,6 +43,3 @@ export function useAuth() {
 
   return { user, loading, login, logout, fetchUser, isAdmin }
 }
-
-// Fix: use raw axios for csrf-cookie
-import axios from 'axios'
