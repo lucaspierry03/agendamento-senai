@@ -9,25 +9,19 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name' => 'Administrador',
-            'email' => 'admin@email.com',
-            'password' => 'password',
-            'role' => 'admin',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@email.com'],
+            ['name' => 'Administrador', 'password' => 'password', 'role' => 'admin']
+        );
 
-        User::create([
-            'name' => 'João Silva',
-            'email' => 'joao@email.com',
-            'password' => 'password',
-            'role' => 'attendant',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'joao@email.com'],
+            ['name' => 'João Silva', 'password' => 'password', 'role' => 'attendant']
+        );
 
-        User::create([
-            'name' => 'Maria Santos',
-            'email' => 'maria@email.com',
-            'password' => 'password',
-            'role' => 'attendant',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'maria@email.com'],
+            ['name' => 'Maria Santos', 'password' => 'password', 'role' => 'attendant']
+        );
     }
 }

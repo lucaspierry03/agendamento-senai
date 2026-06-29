@@ -12,11 +12,14 @@ class AppointmentSeeder extends Seeder
 {
     public function run(): void
     {
+        if (Appointment::count() > 0) {
+            return;
+        }
+
         $attendants = User::where('role', 'attendant')->get();
         $clients = Client::all();
         $today = Carbon::today();
 
-        // Agendamentos para os próximos dias
         $appointments = [
             ['days' => 0, 'start' => '08:00', 'end' => '08:30', 'attendant' => 0, 'client' => 0],
             ['days' => 0, 'start' => '09:30', 'end' => '10:00', 'attendant' => 0, 'client' => 1],
@@ -28,7 +31,6 @@ class AppointmentSeeder extends Seeder
         foreach ($appointments as $data) {
             $date = $today->copy()->addDays($data['days']);
 
-            // Pula fim de semana
             if ($date->isWeekend()) {
                 $date = $date->nextWeekday();
             }
